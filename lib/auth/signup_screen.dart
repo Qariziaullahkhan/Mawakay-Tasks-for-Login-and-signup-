@@ -69,6 +69,16 @@ class _SignupScreenState extends State<SignupScreen> {
               },
               ),
                         const Gap(20),
+                        Row(
+                          children: [
+                            Text("Don't have an account?"),
+                            TextButton(onPressed: (){
+                              Navigator.of(context).pop();
+                            }, child: Text("Login"))
+
+                          ],
+                        ),
+                        const Gap(20),
           
               ElevatedButton(
                 

@@ -72,6 +72,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
                         const Gap(20),
+                        Row(
+                          children: [
+                            Text("Already have an account?"),
+                            TextButton(onPressed: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                                return const SignupScreen();
+                              }));
+                            }, child: Text("Register"))
+
+                          ],
+                        ),
           
               ElevatedButton(
                 
