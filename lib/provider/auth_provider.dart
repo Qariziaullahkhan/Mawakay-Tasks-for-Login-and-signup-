@@ -7,7 +7,7 @@ class AuthProvider extends ChangeNotifier{
     _isAuthenticated = true;
     notifyListeners();
   }
-  Future<void>signip(String email, String password)async{
+  Future<void>signip(String email, String password,String name, String confirmpassword)async{
     _isAuthenticated = true;
     notifyListeners();
   }

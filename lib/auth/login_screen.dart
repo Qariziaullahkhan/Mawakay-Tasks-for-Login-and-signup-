@@ -18,11 +18,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+        print("build");
+
     final authProvider =Provider.of<AuthProvider>(context);
-    print("build");
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login Screen"),
+         centerTitle: true,
+        backgroundColor: Colors.red,
+       
+       
+        title:const Text("Login Screen", 
+        style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
 
       ),
       body: Form(
@@ -48,10 +54,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   if(value == null || value.isEmpty){
                     return "Enter a valid Email";
                   }
+                    bool emailValid = 
+               RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value);
+                   if(!emailValid){
+                    return "invalid Email address.try again";
+                   }
                   return null;
                 },
                 
               ),
+
                         const Gap(20),
           
                TextFormField(
@@ -97,13 +110,16 @@ class _LoginScreenState extends State<LoginScreen> {
              ),
                 onPressed: ()async{
                 if(_formkey.currentState!.validate()){
- await authProvider.login(emailcontroller.text.trim(), passwordcontroller.text.trim());
+                  await authProvider.login(emailcontroller.text.trim(), passwordcontroller.text.trim());
                 Navigator.of(context).push(MaterialPageRoute(builder: (context){
                   return const SignupScreen();
                 }));
                 }
          
-              }, child: Text("Login")),
+              }, 
+              child: Text("Login"),
+              ),
+
             ],
           ),
         ),
