@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:mawakay_task_textformfield/Home_screen.dart';
+import 'package:mawakay_task_textformfield/auth/login_screen.dart';
 import 'package:mawakay_task_textformfield/provider/auth_provider.dart';
+import 'package:ndialog/ndialog.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -21,7 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final confirmpasswordcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    // final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -180,29 +184,77 @@ class _SignupScreenState extends State<SignupScreen> {
             
                  ),
                   onPressed: ()async{
-                    //  String Name = namecontroller.text.trim();
-                    //  String Email = emailcontroller.text.trim();
-                    //  String Password = passwordcontroller.text.trim();
-                    //  String confirmpassword = confirmpasswordcontroller.text.trim();
+                     String Name = namecontroller.text.trim();
+                     String Email = emailcontroller.text.trim();
+                     String Password = passwordcontroller.text.trim();
+                     String confirmpassword = confirmpasswordcontroller.text.trim();
         
                             
         
+                   
+                       if(Name.isEmpty || Email.isEmpty || Password.isEmpty || confirmpassword.isEmpty){
+                        Fluttertoast.showToast(msg: "Please all the fields");
+                       }
+
+                       if(Password != confirmpassword){
+                        Fluttertoast.showToast(msg: "password deos not match");
+                       }
+                         ProgressDialog progressDialog = ProgressDialog(context,
+                        title: const Text("Signing up"),
+                        message: const Text("Please provide"));
+
+                        try{
+                        FirebaseAuth auth = FirebaseAuth.instance;
+                        UserCredential?  userCredential =
+                         await auth.createUserWithEmailAndPassword(email: emailcontroller.text.trim(), password: passwordcontroller.text.trim());
+                         if(userCredential.user!= null){
+                FirebaseFirestore store = FirebaseFirestore.instance;
+                await store.collection("users").doc(userCredential.user!.uid).set(
+                  {
+                   "Name":Name,
+                   "Email":Email,
+                   "Password": Password ,
+                   "confirmpassword":confirmpassword,
+                   "uid":userCredential.user!.uid,
+
+                  }
+                );
                     if(_formkey.currentState!.validate()){
-                       await authProvider.signip(emailcontroller.text.trim(), 
-                       passwordcontroller.text.trim(),
-                       namecontroller.text.trim(),
-                       confirmpasswordcontroller.text.trim(),
-                       );
-            // if(Name.isEmpty || Email.isEmpty || Password.isEmpty || confirmpassword.isEmpty){
-            //   Fluttertoast.showToast(msg: "Please fill all the fields");
-            // }
-            // if(Password!= confirmpassword){
-            //   Fluttertoast.showToast(msg: "Please password does not match");
-            // }
-              Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                    return const HomeScreen();
-                  }));
-                    }
+                      //  await authProvider.signip(
+                      //   namecontroller.text.trim(),
+                      //   emailcontroller.text.trim(), 
+                      //  passwordcontroller.text.trim(),
+                      //  namecontroller.text.trim(),
+                      //  confirmpasswordcontroller.text.trim(),
+                      //  );
+                  }
+                   Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
+                      } else {
+                        progressDialog.dismiss();
+                        Fluttertoast.showToast(msg: "Failed",textColor: Colors.red);
+                      }
+                      
+                         }
+                         on FirebaseAuthException catch (e){
+                           progressDialog.dismiss();
+                   
+                      if (e.code == "Email is already use in") {
+                     Fluttertoast.showToast(msg: "Email - already user -in",textColor: Colors.amber);
+                      } else {
+                        if (e.code == "weak password") {
+                          Fluttertoast.showToast(msg: "weak password",textColor: Colors.red);
+                        }
+                         }
+                         }
+                        
+                        catch(e){
+                          progressDialog.dismiss();
+                          Fluttertoast.showToast(msg: "something went wrong",textColor: Colors.red);
+
+                        }
+           
+               
                       
                 }, child: Text("sign up",style: TextStyle(fontSize: 20,color: Colors.white),)),
               ],
