@@ -13,6 +13,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  bool _isvisiblity =true;
   var _formkey = GlobalKey<FormState>();
   final namecontroller = TextEditingController();
   final emailcontroller = TextEditingController();
@@ -92,6 +93,21 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: "password",
                     labelText: "password",
                     prefixIcon: Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isvisiblity = !_isvisiblity;
+                            });
+                          },
+                          icon: _isvisiblity
+                              ? const Icon(
+                                  Icons.visibility,
+                                  color: Colors.black,
+                                )
+                              : const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.black,
+                                )),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14)
                     )
@@ -111,6 +127,21 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: "Confirm password",
                     labelText: "Confirm password",
                     prefixIcon: Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isvisiblity = !_isvisiblity;
+                            });
+                          },
+                          icon: _isvisiblity
+                              ? const Icon(
+                                  Icons.visibility,
+                                  color: Colors.black,
+                                )
+                              : const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.black,
+                                )),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14)
                     )
@@ -141,7 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ElevatedButton(
                   
                     style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25)
                     ),
@@ -173,7 +204,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   }));
                     }
                       
-                }, child: Text("sign up")),
+                }, child: Text("sign up",style: TextStyle(fontSize: 20,color: Colors.white),)),
               ],
             ),
           ),

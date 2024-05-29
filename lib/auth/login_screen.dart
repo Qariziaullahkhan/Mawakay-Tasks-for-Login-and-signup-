@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:mawakay_task_textformfield/Home_screen.dart';
+import 'package:mawakay_task_textformfield/auth/forgot_password_screen.dart';
 import 'package:mawakay_task_textformfield/auth/signup_screen.dart';
 import 'package:mawakay_task_textformfield/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _isvisiblity = true;
   var _formkey = GlobalKey<FormState>();
   final emailcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
@@ -45,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   labelText: "Email",
                   
                   prefixIcon: Icon(Icons.email),
+
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14)
                   ),
@@ -73,6 +77,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: "password",
                   labelText: "password",
                   prefixIcon: Icon(Icons.lock),
+               suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isvisiblity = !_isvisiblity;
+                            });
+                          },
+                          icon: _isvisiblity
+                              ? const Icon(
+                                  Icons.visibility,
+                                  color: Colors.black,
+                                )
+                              : const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.black,
+                                )),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14)
                   )
@@ -84,6 +103,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
+              const Gap(20),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: TextButton(onPressed: (){
+
+
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                    return const ForgotPasswordScreen();
+                  }));
+                }, 
+                child: Text("Forgot Password?",style: TextStyle(color: Colors.blue,),))),
                         const Gap(20),
                         Row(
                           children: [
@@ -100,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 
                 style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.black,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25)
                 ),
@@ -112,12 +142,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 if(_formkey.currentState!.validate()){
                   await authProvider.login(emailcontroller.text.trim(), passwordcontroller.text.trim());
                 Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                  return const SignupScreen();
+                  return const HomeScreen();
                 }));
                 }
          
               }, 
-              child: Text("Login"),
+              child: Text("Login",style:TextStyle(fontSize: 20,color: Colors.white),),
               ),
 
             ],
