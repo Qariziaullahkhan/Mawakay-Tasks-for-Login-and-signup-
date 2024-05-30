@@ -1,18 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AuthProvider extends ChangeNotifier{
-  bool _isAuthenticated = false;
-  bool get isAuthenticated => _isAuthenticated;
-  Future<void>login(String email,String password)async{
-    _isAuthenticated = true;
-    notifyListeners();
+class AuthProvider with ChangeNotifier {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+
+  // Example method to handle login
+  Future<void> login(String email, String password) async {
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      notifyListeners();
+    } catch (e) {
+      throw e;
+    }
   }
-  Future<void>signip(String email, String password,String name, String confirmpassword)async{
-    _isAuthenticated = true;
-    notifyListeners();
-  }
-  void logout(){
-    _isAuthenticated = false;
-    notifyListeners();
-  }
+  
 }

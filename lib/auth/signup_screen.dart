@@ -25,7 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final confirmpasswordcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // final authProvider = Provider.of<AuthProvider>(context);
+    //  final authProvider = Provider.of<AuthProvider>(context,listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -93,6 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const Gap(20),
                  TextFormField(
                   controller: passwordcontroller,
+                  obscureText: _isvisiblity,
                   decoration: InputDecoration(
                     hintText: "password",
                     labelText: "password",
@@ -126,7 +127,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                  const Gap(20),
                  TextFormField(
+                  
                   controller: confirmpasswordcontroller,
+                  obscureText: _isvisiblity,
                   decoration: InputDecoration(
                     hintText: "Confirm password",
                     labelText: "Confirm password",
@@ -199,9 +202,13 @@ class _SignupScreenState extends State<SignupScreen> {
                        if(Password != confirmpassword){
                         Fluttertoast.showToast(msg: "password deos not match");
                        }
+                          
+
                          ProgressDialog progressDialog = ProgressDialog(context,
                         title: const Text("Signing up"),
                         message: const Text("Please provide"));
+                                            progressDialog.show();
+
 
                         try{
                         FirebaseAuth auth = FirebaseAuth.instance;
@@ -219,15 +226,16 @@ class _SignupScreenState extends State<SignupScreen> {
 
                   }
                 );
-                    if(_formkey.currentState!.validate()){
-                      //  await authProvider.signip(
-                      //   namecontroller.text.trim(),
-                      //   emailcontroller.text.trim(), 
-                      //  passwordcontroller.text.trim(),
-                      //  namecontroller.text.trim(),
-                      //  confirmpasswordcontroller.text.trim(),
-                      //  );
-                  }
+                Fluttertoast.showToast(msg: "Succesful",textColor: Colors.white);
+                  //   if(_formkey.currentState!.validate()){
+                  //      await authProvider.signip(
+                  //       namecontroller.text.trim(),
+                  //       emailcontroller.text.trim(), 
+                  //      passwordcontroller.text.trim(),
+                  //      namecontroller.text.trim(),
+                  //      confirmpasswordcontroller.text.trim(),
+                  //      );
+                  // }
                    Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const LoginScreen()));
                       } else {

@@ -1,10 +1,13 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:mawakay_task_textformfield/Home_screen.dart';
 import 'package:mawakay_task_textformfield/auth/forgot_password_screen.dart';
 import 'package:mawakay_task_textformfield/auth/signup_screen.dart';
 import 'package:mawakay_task_textformfield/provider/auth_provider.dart';
+import 'package:ndialog/ndialog.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
         print("build");
 
-    final authProvider =Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
          centerTitle: true,
@@ -73,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
           
                TextFormField(
                 controller: passwordcontroller,
+                obscureText: _isvisiblity,
                 decoration: InputDecoration(
                   hintText: "password",
                   labelText: "password",
@@ -139,12 +142,55 @@ class _LoginScreenState extends State<LoginScreen> {
         
              ),
                 onPressed: ()async{
-                if(_formkey.currentState!.validate()){
-                  await authProvider.login(emailcontroller.text.trim(), passwordcontroller.text.trim());
-                Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                  return const HomeScreen();
-                }));
-                }
+                  var Email = emailcontroller.text.trim();
+                  var Password = passwordcontroller.text.trim();
+                  if(Email.isEmpty || Password.isEmpty){
+                    Fluttertoast.showToast(msg: "Please all the fields",textColor: Colors.indigo);
+                    return ;
+                  }
+
+                  if(Password.length<8){
+                    Fluttertoast.showToast(msg: "Password deos not match");
+                    return ;
+                  }
+                
+
+                    ProgressDialog progressDialog = ProgressDialog(context,
+                        title: const Text("Logging in up"),
+                        message: const Text("please provide"));
+                    progressDialog.show();
+
+                    try{
+                       FirebaseAuth auth = FirebaseAuth.instance;
+                      UserCredential? userCredential =
+                          await auth.signInWithEmailAndPassword(
+                              email: Email, password: Password);
+                              if(userCredential.user!= null){
+                                      progressDialog.dismiss();
+                                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                                        return const HomeScreen();
+                                      }));
+
+                              }
+                              else{
+                                     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                                        return const ForgotPasswordScreen();
+                                      }));
+                              }
+
+                    }
+
+                    catch(e){
+                            progressDialog.dismiss();
+                      Fluttertoast.showToast(msg: "wrong password");
+                    }
+
+                // if(_formkey.currentState!.validate()){
+                //   await authProvider.login(emailcontroller.text.trim(), passwordcontroller.text.trim());
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                //   return const HomeScreen();
+                // }));
+                // }
          
               }, 
               child: Text("Login",style:TextStyle(fontSize: 20,color: Colors.white),),
