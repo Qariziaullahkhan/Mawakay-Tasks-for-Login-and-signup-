@@ -23,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
         
         title: Text("Home Screen"),
         actions: [
-          NDrwawer(),
          
         ],
         
