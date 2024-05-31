@@ -18,13 +18,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // final authprovider = Provider.of<AuthProvider>(context);
     return  Scaffold(
+             backgroundColor: Colors.grey[300],
+               drawer:  const NDrwawer(),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        backgroundColor: Colors.red,
+        title: Text("Home Screen",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
         
-        title: Text("Home Screen"),
-        actions: [
-         
-        ],
         
       ),
       body: Padding(

@@ -58,10 +58,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                   const Gap(20),
-                      Center(
-                  child: Text(
-                      'Verify Email\nAn email has been sent to ${FirebaseAuth.instance.currentUser!.email}'),
-                ),
+                   
                 const Gap(20),
                 const Center(child: Text('Please Verify It your Email')),
                 const Gap(20),
@@ -115,11 +112,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 onPressed: (){
                  String Email = emailcontroller.text.trim();
                  FirebaseAuth auth = FirebaseAuth.instance;
-                 auth.sendPasswordResetEmail(email: Email).then((value){
-                Fluttertoast.showToast(msg: "We have send email to recover Password: please check Email");
-                Navigator.of(context).pop();
-                 }).onError((error, stackTrace) {
-               Fluttertoast.showToast(msg: error.toString(),textColor: Colors.red);
+                 auth.sendPasswordResetEmail(email: Email).then((value) {
+                    Fluttertoast.showToast(msg: "We have send Email to recover Password: Please check email",textColor: Colors.blue);
+                    Navigator.of(context).pop();
+                  }).onError((error, stackTrace) {
+                    Fluttertoast.showToast(msg: error.toString(),textColor: Colors.red);
                   });
         
                 }, child: const Text("Forgot Password",style: TextStyle(color: Colors.white,fontSize: 15),)),

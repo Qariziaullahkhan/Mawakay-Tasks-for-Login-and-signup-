@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
          centerTitle: true,
         backgroundColor: Colors.red,
-       
+       automaticallyImplyLeading: false,
        
         title:const Text("Login Screen", 
         style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
