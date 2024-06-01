@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mawakay_task_textformfield/auth/login_screen.dart';
-import 'package:mawakay_task_textformfield/provider/auth_provider.dart';
 import 'package:mawakay_task_textformfield/widgets/custom_drawers.dart';
 import 'package:provider/provider.dart';
 
@@ -47,10 +46,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: ()async{
        
         await FirebaseAuth.instance.signOut();
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-          return const LoginScreen();
-        }));
 
+            showDialog(context: context, builder: (context){
+            return AlertDialog(
+                title:  Text('Confirmation'),
+                        content:  Text('Are you sure to Logout ?'),
+                        actions: [
+                          TextButton(onPressed: (){
+                            Navigator.of(context).pop();
+                          }, child: const Text("No")),
+                               TextButton(
+                              onPressed: () async {
+                                Navigator.pop(context);
+
+                                await FirebaseAuth.instance.signOut();
+
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) {
+                                  return const LoginScreen();
+                                }));
+                              },
+                              child: const Text('Yes')),
+
+                        ],
+            );
+          });
+       
 
                     }, child: Text("Log out",style: TextStyle(color: Colors.white,fontSize: 15),))
           ],

@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:mawakay_task_textformfield/Home_screen.dart';
 import 'package:mawakay_task_textformfield/auth/login_screen.dart';
-import 'package:mawakay_task_textformfield/provider/auth_provider.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:provider/provider.dart';
 
