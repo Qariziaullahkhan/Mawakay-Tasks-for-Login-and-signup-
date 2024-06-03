@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mawakay_task_textformfield/Home_screen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:provider/provider.dart';
+import '../provider/register_providers.dart';
 import '../widgets/Utillity/Flutter_toast.dart';
 import 'forgot_password_screen.dart';
 import 'signup_screen.dart';
@@ -23,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+        final loginProvider = Provider.of<LoginProvider>(context); // Access provider instance
+   print("Build");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -138,8 +141,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   minimumSize: const Size(200, 50),
                 ),
                 onPressed: () async {
-                       var Email = emailController.text.trim();
-                    var Password = passwordController.text.trim();
+
+
+                  if (!_formKey.currentState!.validate()) {
+                      return;
+                    }
+                    loginProvider.isLoading = true;
+                    await loginProvider.login(emailController.text.trim(), passwordController.text.trim()
+                    
+                    
+                    );
+                    loginProvider.isLoading = false;
+
+
+                       String Email = emailController.text.trim();
+                    String Password = passwordController.text.trim();
 
                     if (Email.isEmpty || Password.isEmpty) {
                       Utils.toastmessage(
@@ -168,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (context) {
-                          return const LoginScreen();
+                          return const HomeScreen();
                         }));
                       }
                     } on FirebaseAuthException catch (e) {

@@ -6,6 +6,8 @@ import 'package:mawakay_task_textformfield/auth/login_screen.dart';
 import 'package:mawakay_task_textformfield/auth/signup_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'provider/register_providers.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -22,16 +24,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-      
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: (FirebaseAuth.instance.currentUser != null)? const LoginScreen(): const HomeScreen(),
-        );
+    return MultiProvider(
+      providers: [
+                ChangeNotifierProvider(create: (context) => SignupProvider()),
+                ChangeNotifierProvider(create: (context) => LoginProvider()),
+
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+        
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: (FirebaseAuth.instance.currentUser != null)? const HomeScreen(): const LoginScreen(),
+          ),
+    );
   }
 }
 

@@ -25,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
         
         
       ),
-      body: Padding(
+       body: Padding(
         padding: const EdgeInsets.only(left: 20,right: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-         const   Text("WELCOME HOME SCREEN", style: TextStyle(
+               const    Text("WELCOME HOME SCREEN", style: TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
